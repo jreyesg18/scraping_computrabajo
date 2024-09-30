@@ -1,7 +1,6 @@
 # Scraper de Ofertas Laborales
 
-Este proyecto es un scraper de ofertas laborales que utiliza Selenium para extraer títulos y enlaces de trabajos desde la página de Computrabajo en Chile. Permite buscar trabajos que contengan una palabra clave específica ingresada por el usuario.
-
+Este proyecto es un scraper de ofertas laborales que utiliza Selenium para extraer títulos, enlaces, y las palabras clave coincidentes de trabajos desde la página de Computrabajo en Chile. Permite buscar trabajos que contengan una o más palabras clave ingresadas por el usuario.
 ## Requisitos
 
 - Python 3.x
@@ -30,8 +29,7 @@ Este proyecto es un scraper de ofertas laborales que utiliza Selenium para extra
 
 ## Ejemplo
 
-Si deseas buscar trabajos que contengan la palabra "Ventas", simplemente ingresa "Ventas" cuando se te solicite.
-
+Si deseas buscar trabajos que contengan las palabras "Ventas, Marketing, Programación", simplemente ingresa esas palabras separadas por comas cuando se te solicite.
 ## Estructura de los Datos
 
 Los datos extraídos se guardarán en un archivo JSON con la siguiente estructura:
@@ -41,13 +39,14 @@ Los datos extraídos se guardarán en un archivo JSON con la siguiente estructur
             {
                 "title": "Ejecutivo de Ventas Part time de 10 a 16:30 hrs de lunes a viernes",
                 "link": "https://cl.computrabajo.com/ofertas-de-trabajo/oferta-de-trabajo-de-ejecutivo-de-ventas-part-time-de-10-a-1630-hrs-de-lunes-a-viernes-en-santiago-centro-2DC9E14A19608C9661373E686DCF3405#lc=ListOffers-Score-0"
+                "matching_keyword": "ventas"
             },
             ...
         ]
 
 ## Notas
 
-Asegúrate de que tu conexión a internet esté activa durante la ejecución del script.
-El script puede tardar un tiempo en completarse, dependiendo de la cantidad de páginas de resultados.
-
+- Asegúrate de que tu conexión a internet esté activa durante la ejecución del script.
+- El script puede tardar un tiempo en completarse, dependiendo de la cantidad de páginas de resultados.
+- Las palabras clave son insensibles a mayúsculas/minúsculas, por lo que "ventas" y "Ventas" se tratarán como iguales.
 
