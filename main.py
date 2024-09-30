@@ -6,10 +6,17 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # Solicitar al usuario que ingrese la palabra clave
-keyword = input("Ingrese la palabra clave para buscar en los títulos de trabajo: ")
+#keyword = input("Ingrese la palabra clave para buscar en los títulos de trabajo: ")
+# Solicitar al usuario que ingrese varias palabras clave separadas por comas
+keywords = input("Ingrese las palabras clave para buscar en los títulos de trabajo, separadas por comas: ").split(',')
+
+# Limpiar las palabras clave (eliminar espacios en blanco alrededor de cada palabra)
+keywords = [keyword.strip().lower() for keyword in keywords]
 
 # Abrir la página
-url = "https://cl.computrabajo.com/empleos-en-rmetropolitana"
+url = input("Link:  ")
+
+#url = "https://cl.computrabajo.com/empleos-en-rmetropolitana?pubdate=7an"
 driver = webdriver.Chrome()
 
 driver.get(url)
@@ -32,12 +39,22 @@ try:
             title = job_element.text  # Texto del título del trabajo
             link = job_element.get_attribute("href")  # Enlace de la oferta
 
-            # Filtrar por palabra clave en el título
-            if keyword.lower() in title.lower():  # Comparación insensible a mayúsculas
+            # Inicializar una variable para guardar la palabra que coincide
+            matching_keyword = None
+
+            # Filtrar por las palabras clave en el título (insensible a mayúsculas/minúsculas)
+            for keyword in keywords:
+                if keyword in title.lower():
+                    matching_keyword = keyword  # Guardar la palabra que coincide
+                    break  # Si encuentra una coincidencia, no es necesario seguir buscando
+
+            # Si se encontró una coincidencia
+            if matching_keyword:
                 # Crear un diccionario con los datos del trabajo
                 job_data = {
                     "title": title,
-                    "link": link
+                    "link": link,
+                    "matching_keyword": matching_keyword  # Almacenar la palabra clave que coincidió
                 }
 
                 # Agregar el diccionario a la lista
@@ -53,7 +70,7 @@ try:
             next_button = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.XPATH, "//span[@title='Siguiente' and contains(@data-path, 'p=')]"))
             )
-            next_button.click()  # Hacer clic en el botón de "Siguiente"
+            driver.execute_script("arguments[0].click();", next_button)
             time.sleep(3)  # Esperar a que se carguen los nuevos trabajos
 
         except Exception as e:
